@@ -84,7 +84,7 @@ const FolderMakeModal = ({
                 folderNameRef.current = el;
               }}
               type="text"
-              placeholder="폴더명/폴더명/"
+              placeholder="폴더명/"
               name="folderName"
               // value={folderName}
               onChange={handleInputChange}
