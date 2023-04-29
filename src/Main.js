@@ -218,6 +218,9 @@ function Main() {
   };
 
   const handleFolder = async (folderName) => {
+    const folderNames = doubleClickSelected
+      .split("/")
+      .filter((name) => name !== "");
     const bucketName = selected;
     await axios
       .post(BASE_URL + "/folder/list", {
@@ -229,15 +232,16 @@ function Main() {
         const aafolders = res.data.returnVal.folders || [];
         const aafiles = res.data.returnVal.files || [];
 
-        if (aafolders.length >= 0 ) {
-          aafolders.unshift(" .  . ");
-        } if (setDoubleClickSelected === "") {
-          console.log(doubleClickSelected)
-          aafolders.shift()
+        if (folderNames !== null) {
+          console.log('folderNames',folderNames)
+          console.log('folderNames.length',folderNames.length)
+          aafolders.unshift(" .  . ");        
         }
-
         setFolders(aafolders);
-        setFiles(aafiles);
+
+        const filteredFiles = aafiles.filter(aafile=>aafile.fileSize >0)
+        setFiles(filteredFiles);
+
         setDoubleClickSelected(folderName);
       })
       .catch((error) => {
@@ -250,6 +254,7 @@ function Main() {
       .split("/")
       .filter((name) => name !== "");
     const parentFolderPath = folderNames.slice(0, -1).join("/");
+      console.log('parentFolderPath', parentFolderPath)
       handleFolder(parentFolderPath);
   };
 
